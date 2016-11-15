@@ -13,6 +13,9 @@
   "jest": {
     "preset": "jest-react-native"
   },
+  "rnpm": {
+    "assets":["./assets/fonts"]
+  },
   "devDependencies": {
     "babel-jest": "17.0.0",
     "babel-preset-react-native": "1.9.0",
