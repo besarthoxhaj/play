@@ -10,11 +10,28 @@ import {
   View,
   Dimensions,
 } from 'react-native';
-
+import reactMixin from 'react-mixin';
+import TimerMixin from 'react-timer-mixin';
+import mockData from './data.json';
 import helper from './_helper.js';
 
 export default class Play extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {num:0};
+  }
+  componentDidMount() {
+    var timerId = this.setInterval(() => {
+      if(this.state.num > 450) {
+        this.setState({num:500});
+        this.clearInterval(timerId);
+      } else {
+        this.setState({num:this.state.num + 13});
+      }
+    },100);
+  }
   render() {
+    const { fixture: { awayTeam, homeTeam } } = mockData[0];
     return (
       <Image
         source={require('./assets/images/background.png')}
@@ -54,7 +71,7 @@ export default class Play extends Component {
         <View style={styles.bigMessBottom}>
           <Text style={styles.totalWon}>TOTAL WON</Text>
           <View style={{flexDirection:'row',alignSelf:'center'}}>
-            <Text style={styles.totalPoints}>+500</Text>
+            <Text style={styles.totalPoints}>{`+${this.state.num}`}</Text>
             <Image style={{resizeMode:'contain',right:-5,top:-2,width:helper.scale*65,height:helper.scale*65}} source={require('./assets/images/coins.png')}></Image>
           </View>
           <View style={{flexDirection:'row',alignSelf:'center'}}>
@@ -229,5 +246,7 @@ const styles = StyleSheet.create({
     textShadowOffset:{width:1.5,height:1.5},
   }
 });
+
+reactMixin(Play.prototype,TimerMixin);
 
 AppRegistry.registerComponent('Play', () => Play);
